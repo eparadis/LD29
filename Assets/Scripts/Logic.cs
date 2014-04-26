@@ -8,12 +8,12 @@ public class Logic : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		board = GetComponent<Board>();
+
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
+	void OnBoardLoaded()
+	{
+		board = GetComponent<Board>();
 	}
 
 	void OnPlayerMoved( Vector2 playerPos)

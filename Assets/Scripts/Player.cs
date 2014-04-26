@@ -12,7 +12,6 @@ public class Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		board = transform.parent.gameObject.GetComponent<Board>();
 	}
 	
 	// Update is called once per frame
@@ -77,6 +76,7 @@ public class Player : MonoBehaviour {
 	// called when the board is finished loading
 	void OnBoardLoaded()
 	{
+		board = transform.parent.gameObject.GetComponent<Board>(); 
 		UpdatePosition();
 	}
 
