@@ -92,6 +92,14 @@ public class Board : MonoBehaviour {
 
 	public bool isWaterTile( int row, int col)
 	{
-		return levelData[row][col] == '0' | levelData[row][col] == '3';
+		char t = levelData[row][col];
+		return t == '0' |		// water
+				t == '2' |		// mine
+				t == '3';		// water where a shark starts
+	}
+
+	public bool isMineTile( int row, int col)
+	{
+		return levelData[row][col] == '2';
 	}
 }

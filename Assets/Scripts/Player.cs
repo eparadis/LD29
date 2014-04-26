@@ -8,10 +8,11 @@ public class Player : MonoBehaviour {
 	int maxRow = 9;
 	int maxCol = 9;
 	private Board board;
+	bool isSunk = false;
 
 	// Use this for initialization
 	void Start () {
-		board = GameObject.Find("board").GetComponent<Board>();
+		board = transform.parent.gameObject.GetComponent<Board>();
 	}
 	
 	// Update is called once per frame
@@ -65,6 +66,8 @@ public class Player : MonoBehaviour {
 	// called on a successful change in position
 	void UpdatePosition()
 	{
+		if( isSunk )
+			return;
 		transform.parent.gameObject.BroadcastMessage( "OnPlayerMoved", new Vector2( row, col));
 		Vector3 pos = board.GetTilePosition( row, col);
 		pos.z = transform.position.z;	// do not change the Z position
@@ -106,6 +109,25 @@ public class Player : MonoBehaviour {
 			MoveLeft();
 		if( c > col && r == row)
 			MoveRight();
+	}
+
+	void OnSinkShip()
+	{
+		isSunk = true;
+		StartCoroutine( AnimateSinking() );
+	}
+
+
+	IEnumerator AnimateSinking()
+	{
+		float length = 1f;	// one second to sink the ship
+		float startTime = Time.time;
+		Vector3 scale = gameObject.transform.localScale;
+		do {
+			scale *= 0.9f;
+			gameObject.transform.localScale = scale;
+			yield return new WaitForEndOfFrame();
+		} while (Time.time < startTime + length);
 	}
 
 }
