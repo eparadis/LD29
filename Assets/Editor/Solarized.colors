@@ -11,4 +11,36 @@ MonoBehaviour:
   m_Script: {fileID: 12323, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: Solarized
   m_EditorClassIdentifier: 
-  m_Presets: []
+  m_Presets:
+  - m_Name: Base03
+    m_Color: {r: 0, g: .164705887, b: .211764708, a: 1}
+  - m_Name: Base02
+    m_Color: {r: .0235294122, g: .211764708, b: .262745112, a: 1}
+  - m_Name: Base01
+    m_Color: {r: .345098048, g: .431372553, b: .4627451, a: 1}
+  - m_Name: Base00
+    m_Color: {r: .396078438, g: .482352942, b: .517647088, a: 1}
+  - m_Name: Base0
+    m_Color: {r: .513725519, g: .580392182, b: .588235319, a: 1}
+  - m_Name: Base1
+    m_Color: {r: .576470613, g: .631372571, b: .631372571, a: 1}
+  - m_Name: Base2
+    m_Color: {r: .933333337, g: .909803927, b: .827450991, a: 1}
+  - m_Name: Base3
+    m_Color: {r: .992156863, g: .964705884, b: .882352948, a: 1}
+  - m_Name: Yellow
+    m_Color: {r: .70588237, g: .53725493, b: 0, a: 1}
+  - m_Name: Orange
+    m_Color: {r: .796078444, g: .301960796, b: 0, a: 1}
+  - m_Name: Red
+    m_Color: {r: .862745106, g: .203921571, b: .152941182, a: 1}
+  - m_Name: Magenta
+    m_Color: {r: .823529422, g: .215686277, b: .521568656, a: 1}
+  - m_Name: Violet
+    m_Color: {r: .419607848, g: .43921569, b: .792156875, a: 1}
+  - m_Name: Blue
+    m_Color: {r: .137254909, g: .541176498, b: .847058833, a: 1}
+  - m_Name: Cyan
+    m_Color: {r: .168627456, g: .631372571, b: .596078455, a: 1}
+  - m_Name: Green
+    m_Color: {r: .525490224, g: .600000024, b: 0, a: 1}
