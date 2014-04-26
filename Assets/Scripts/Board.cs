@@ -23,6 +23,7 @@ public class Board : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		PlaceTiles();
+		BroadcastMessage("OnBoardLoaded");	// tell child objects board is loaded; should include all tiles, players, enemies, etc
 	}
 	
 	// Update is called once per frame
@@ -56,8 +57,18 @@ public class Board : MonoBehaviour {
 				}
 				tile.transform.parent = gameObject.transform;
 				tile.transform.localPosition = pos;
-				tile.name = string.Format ("board_tile_r{0}_c{1}", row, col);
+				tile.name = MakeTileName( row, col);
 			}
 		}
+	}
+
+	string MakeTileName( int row, int col)
+	{
+		return string.Format ("board_tile_r{0}_c{1}", row, col);
+	}
+
+	public Vector3 GetTilePosition( int row, int col)
+	{
+		return transform.FindChild( MakeTileName( row, col)).position ;
 	}
 }
