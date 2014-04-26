@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: WaterTile
+  m_Name: LandTileMat
   m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
@@ -25,4 +25,4 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: .137254909, g: .541176498, b: .847058833, a: 1}
+        second: {r: .70588237, g: .53725493, b: 0, a: 1}

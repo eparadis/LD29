@@ -182,6 +182,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waterTilePrefab: {fileID: 100000, guid: 6df8c489ad3224cd7872ca1bf55fd8e6, type: 2}
+  landTilePrefab: {fileID: 100000, guid: 57bba8b7f85ae49049ba024c0ac64422, type: 2}
+  mineTilePrefab: {fileID: 100000, guid: 1d33a62180f5e41b9af1f58cb6ec7f8a, type: 2}
 --- !u!4 &612080778
 Transform:
   m_ObjectHideFlags: 0
