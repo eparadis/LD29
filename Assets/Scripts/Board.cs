@@ -7,18 +7,19 @@ public class Board : MonoBehaviour {
 	public GameObject landTilePrefab;
 	public GameObject mineTilePrefab;
 	public GameObject sharkPrefab;
+	public GameObject treasurePrefab;
 
 	private string[] levelData = {
 	//   0123456789
 		"0000000000",	// 0
 		"0011002000",	// 1
-		"0011000000",	// 2
+		"0011004000",	// 2
 		"0000002000",	// 3
 		"0000000000",	// 4
 		"0020000300",	// 5
 		"0030000001",	// 6
 		"0000200011",	// 7
-		"0000001111",	// 8
+		"0040001111",	// 8
 		"0000111111"};	// 9
 
 	// Use this for initialization
@@ -68,6 +69,15 @@ public class Board : MonoBehaviour {
 					shark.col = col;
 					shark.board = this;
 					break;
+				case '4':
+					tile = (GameObject) GameObject.Instantiate( waterTilePrefab);
+
+					GameObject treasureGO = (GameObject) GameObject.Instantiate( treasurePrefab);
+					treasureGO.transform.parent = gameObject.transform;
+					Vector3 treasurePos = pos;
+					treasurePos.z = -0.75f;	// above tiles and sharks, below ship
+					treasureGO.transform.localPosition = treasurePos;
+					break;
 				}
 				tile.transform.parent = gameObject.transform;
 				tile.transform.localPosition = pos;
@@ -95,7 +105,8 @@ public class Board : MonoBehaviour {
 		char t = levelData[row][col];
 		return t == '0' |		// water
 				t == '2' |		// mine
-				t == '3';		// water where a shark starts
+				t == '3'|		// water where a shark starts
+				t == '4';		// water where some treasure starts
 	}
 
 	public bool isMineTile( int row, int col)
