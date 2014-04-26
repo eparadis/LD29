@@ -9,6 +9,9 @@ public class Player : MonoBehaviour {
 	int maxCol = 9;
 	private Board board;
 	bool isSunk = false;
+	bool diverDeployed = false;
+	public GameObject diverPrefab;
+	GameObject diver;
 
 	// Use this for initialization
 	void Start () {
@@ -24,10 +27,19 @@ public class Player : MonoBehaviour {
 			MoveUp();
 		if( Input.GetKeyDown(KeyCode.DownArrow) )
 			MoveDown();
+		if( Input.GetKeyDown(KeyCode.Space) )
+			DeployDiver();
 	}
 
 	void MoveUp()
 	{
+		if( diverDeployed)
+		{
+			if( isMovable( row - 1, col))
+			{
+				SetDiverPosition(board.GetTileLocalPosition( row - 1, col));
+			}
+		} else
 		if( isMovable( row - 1, col) )
 		{
 			row -= 1;
@@ -37,6 +49,13 @@ public class Player : MonoBehaviour {
 
 	void MoveDown()
 	{
+		if( diverDeployed)
+		{
+			if( isMovable( row + 1, col))
+			{
+				SetDiverPosition(board.GetTileLocalPosition( row + 1, col));
+			}
+		} else
 		if( isMovable( row + 1, col) )
 		{
 			row += 1;
@@ -46,6 +65,13 @@ public class Player : MonoBehaviour {
 
 	void MoveRight()
 	{
+		if( diverDeployed)
+		{
+			if( isMovable( row, col + 1))
+			{
+				SetDiverPosition(board.GetTileLocalPosition( row, col + 1));
+			}
+		} else
 		if( isMovable( row, col + 1) )
 		{
 			col += 1;
@@ -55,11 +81,24 @@ public class Player : MonoBehaviour {
 
 	void MoveLeft()
 	{
+		if( diverDeployed)
+		{
+			if( isMovable( row, col - 1))
+			{
+				SetDiverPosition(board.GetTileLocalPosition( row, col - 1));
+			}
+		} else
 		if( isMovable( row, col - 1) )
 		{
 			col -= 1;
 			UpdatePosition();
 		}
+	}
+
+	void SetDiverPosition( Vector3 p )
+	{
+		p.z = diver.transform.localPosition.z;
+		diver.transform.localPosition = p;
 	}
 
 	// called on a successful change in position
@@ -92,7 +131,7 @@ public class Player : MonoBehaviour {
 
 	void OnMouseDown()
 	{
-		Debug.Log ("mouse down on player");
+		DeployDiver();
 	}
 
 	void TileClicked( Vector2 coords)
@@ -128,6 +167,24 @@ public class Player : MonoBehaviour {
 			gameObject.transform.localScale = scale;
 			yield return new WaitForEndOfFrame();
 		} while (Time.time < startTime + length);
+	}
+
+	void DeployDiver()
+	{
+		if( !diverDeployed)
+		{
+			diver = (GameObject) GameObject.Instantiate( diverPrefab);
+			diver.transform.parent = board.transform;
+			Vector3 pos = board.GetTileLocalPosition( row, col ); // current boat position
+			pos.z = - 1.5f;	// above the boat
+			diver.transform.localPosition = pos;
+			diverDeployed = true;
+		}
+		else{
+			diverDeployed = false;
+			Destroy (diver);
+			diver = null;
+		}
 	}
 
 }

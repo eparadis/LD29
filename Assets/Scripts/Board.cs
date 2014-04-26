@@ -100,6 +100,11 @@ public class Board : MonoBehaviour {
 		return transform.FindChild( MakeTileName( row, col)).position ;
 	}
 
+	public Vector3 GetTileLocalPosition( int row, int col)
+	{
+		return transform.FindChild( MakeTileName( row, col)).localPosition ;
+	}
+
 	public bool isWaterTile( int row, int col)
 	{
 		char t = levelData[row][col];

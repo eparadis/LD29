@@ -1294,6 +1294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbd99448ab3aa42a09d7cffbb6a98798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  diverPrefab: {fileID: 100000, guid: 7af40f7f5bb754b6bb5a81646ca7647c, type: 2}
 --- !u!1 &1704257789
 GameObject:
   m_ObjectHideFlags: 0
