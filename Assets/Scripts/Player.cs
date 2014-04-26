@@ -85,4 +85,25 @@ public class Player : MonoBehaviour {
 		return !isOffBoard(r,c) && board.isWaterTile(r,c);
 	}
 
+	void OnMouseDown()
+	{
+		Debug.Log ("mouse down on player");
+	}
+
+	void TileClicked( Vector2 coords)
+	{
+		int r = (int) coords.x;
+		int c = (int) coords.y;
+
+		//straight moves only for now
+		if( c == col && r < row)
+			MoveUp();
+		if( c == col && r > row)
+			MoveDown();
+		if( c < col && r == row)
+			MoveLeft();
+		if( c > col && r == row)
+			MoveRight();
+	}
+
 }

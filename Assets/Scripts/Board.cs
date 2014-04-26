@@ -58,6 +58,10 @@ public class Board : MonoBehaviour {
 				tile.transform.parent = gameObject.transform;
 				tile.transform.localPosition = pos;
 				tile.name = MakeTileName( row, col);
+				ClickReporter cr = tile.AddComponent<ClickReporter>();
+				cr.row = row;
+				cr.col = col;
+				cr.reportTarget = gameObject;
 			}
 		}
 	}
