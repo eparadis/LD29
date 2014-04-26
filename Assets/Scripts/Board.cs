@@ -71,4 +71,9 @@ public class Board : MonoBehaviour {
 	{
 		return transform.FindChild( MakeTileName( row, col)).position ;
 	}
+
+	public bool isWaterTile( int row, int col)
+	{
+		return levelData[row][col] == '0';
+	}
 }

@@ -7,9 +7,11 @@ public class Player : MonoBehaviour {
 	int col = 0;
 	int maxRow = 9;
 	int maxCol = 9;
+	private Board board;
 
 	// Use this for initialization
 	void Start () {
+		board = GameObject.Find("board").GetComponent<Board>();
 	}
 	
 	// Update is called once per frame
@@ -26,31 +28,43 @@ public class Player : MonoBehaviour {
 
 	void MoveUp()
 	{
-		row = Mathf.Clamp( row - 1, 0, maxRow);
-		UpdatePosition();
+		if( isMovable( row - 1, col) )
+		{
+			row -= 1;
+			UpdatePosition();
+		}
 	}
 
 	void MoveDown()
 	{
-		row = Mathf.Clamp( row + 1, 0, maxRow);
-		UpdatePosition();
+		if( isMovable( row + 1, col) )
+		{
+			row += 1;
+			UpdatePosition();
+		}
 	}
 
 	void MoveRight()
 	{
-		col = Mathf.Clamp( col + 1, 0, maxCol);
-		UpdatePosition();
+		if( isMovable( row, col + 1) )
+		{
+			col += 1;
+			UpdatePosition();
+		}
 	}
 
 	void MoveLeft()
 	{
-		col = Mathf.Clamp( col - 1, 0, maxCol);
-		UpdatePosition();
+		if( isMovable( row, col - 1) )
+		{
+			col -= 1;
+			UpdatePosition();
+		}
 	}
 
 	void UpdatePosition()
 	{
-		Vector3 pos = GameObject.Find("board").GetComponent<Board>().GetTilePosition( row, col);
+		Vector3 pos = board.GetTilePosition( row, col);
 		pos.z = transform.position.z;	// do not change the Z position
 		transform.position = pos;
 	}
@@ -59,6 +73,16 @@ public class Player : MonoBehaviour {
 	void OnBoardLoaded()
 	{
 		UpdatePosition();
+	}
+
+	bool isOffBoard( int r, int c)
+	{
+		return (r < 0) || (r > maxRow) || (c < 0) || (c > maxCol);
+	}
+
+	bool isMovable( int r, int c)
+	{
+		return !isOffBoard(r,c) && board.isWaterTile(r,c);
 	}
 
 }
