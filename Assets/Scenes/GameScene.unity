@@ -184,6 +184,7 @@ MonoBehaviour:
   waterTilePrefab: {fileID: 100000, guid: 6df8c489ad3224cd7872ca1bf55fd8e6, type: 2}
   landTilePrefab: {fileID: 100000, guid: 57bba8b7f85ae49049ba024c0ac64422, type: 2}
   mineTilePrefab: {fileID: 100000, guid: 1d33a62180f5e41b9af1f58cb6ec7f8a, type: 2}
+  sharkPrefab: {fileID: 100000, guid: 482b0689fcead4142b54d6eb37b3c8c7, type: 2}
 --- !u!4 &612080778
 Transform:
   m_ObjectHideFlags: 0
@@ -325,7 +326,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1684705290}
   m_LocalRotation: {x: 0, y: 0, z: -.70710659, w: -.707106948}
-  m_LocalPosition: {x: 4.5, y: 1.2499975, z: -1}
+  m_LocalPosition: {x: -4.45647526, y: 1.25000203, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 612080778}

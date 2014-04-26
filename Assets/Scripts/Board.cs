@@ -6,6 +6,7 @@ public class Board : MonoBehaviour {
 	public GameObject waterTilePrefab;
 	public GameObject landTilePrefab;
 	public GameObject mineTilePrefab;
+	public GameObject sharkPrefab;
 
 	private string[] levelData = {
 	//   0123456789
@@ -14,8 +15,8 @@ public class Board : MonoBehaviour {
 		"0011000000",	// 2
 		"0000002000",	// 3
 		"0000000000",	// 4
-		"0020000000",	// 5
-		"0000000001",	// 6
+		"0020000300",	// 5
+		"0030000001",	// 6
 		"0000200011",	// 7
 		"0000001111",	// 8
 		"0000111111"};	// 9
@@ -54,6 +55,19 @@ public class Board : MonoBehaviour {
 				case '2':
 					tile = (GameObject) GameObject.Instantiate( mineTilePrefab);
 					break;
+				case '3':
+					tile = (GameObject) GameObject.Instantiate( waterTilePrefab);
+
+					GameObject sharkGO = (GameObject) GameObject.Instantiate( sharkPrefab);
+					sharkGO.transform.parent = gameObject.transform;
+					Vector3 sharkPos = pos;
+					sharkPos.z = -0.5f;	// start it on top of the given tile in the map, but below the ship
+					sharkGO.transform.localPosition = sharkPos;	
+					Shark shark = sharkGO.GetComponent<Shark>();
+					shark.row = row;
+					shark.col = col;
+					shark.board = this;
+					break;
 				}
 				tile.transform.parent = gameObject.transform;
 				tile.transform.localPosition = pos;
@@ -78,6 +92,6 @@ public class Board : MonoBehaviour {
 
 	public bool isWaterTile( int row, int col)
 	{
-		return levelData[row][col] == '0';
+		return levelData[row][col] == '0' | levelData[row][col] == '3';
 	}
 }

@@ -62,8 +62,10 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	// called on a successful change in position
 	void UpdatePosition()
 	{
+		transform.parent.gameObject.BroadcastMessage( "OnPlayerMoved", new Vector2( row, col));
 		Vector3 pos = board.GetTilePosition( row, col);
 		pos.z = transform.position.z;	// do not change the Z position
 		transform.position = pos;
