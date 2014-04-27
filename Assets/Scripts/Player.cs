@@ -114,8 +114,10 @@ public class Player : MonoBehaviour {
 	}
 
 	// called when the board is finished loading
-	void OnBoardLoaded()
+	void OnBoardLoaded( Vector2 startPosition)
 	{
+		row = (int) startPosition.x;
+		col = (int) startPosition.y;
 		board = transform.parent.gameObject.GetComponent<Board>(); 
 		UpdatePosition();
 	}

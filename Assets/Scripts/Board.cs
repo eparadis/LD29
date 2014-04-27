@@ -12,11 +12,13 @@ public class Board : MonoBehaviour {
 
 	private List<char[]> levelData;
 	private int totalTreasures;
+	private Vector2 playerStartPosition;
 
 	public void InitalizeBoard ( List<char[]> level ) {
 		levelData = level;	// should we clone our own copy?
+		playerStartPosition = Vector2.zero;
 		PlaceTiles();
-		BroadcastMessage("OnBoardLoaded");	// tell child objects board is loaded; should include all tiles, players, enemies, etc
+		BroadcastMessage("OnBoardLoaded", playerStartPosition);	// tell child objects board is loaded; should include all tiles, players, enemies, etc
 	}
 
 	void PlaceTiles()
@@ -68,6 +70,11 @@ public class Board : MonoBehaviour {
 
 					totalTreasures += 1;
 					break;
+				case '5':
+					tile = (GameObject) GameObject.Instantiate( waterTilePrefab);
+					playerStartPosition = new Vector2( row, col);
+
+					break;
 				}
 				tile.transform.parent = gameObject.transform;
 				tile.transform.localPosition = pos;
@@ -101,7 +108,8 @@ public class Board : MonoBehaviour {
 		return t == '0' |		// water
 				t == '2' |		// mine
 				t == '3'|		// water where a shark starts
-				t == '4';		// water where some treasure starts
+				t == '4'|		// water where some treasure starts
+				t == '5';		// water where the player starts
 	}
 
 	public bool isMineTile( int row, int col)
