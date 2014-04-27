@@ -39,12 +39,18 @@ public class TitleMenu : MonoBehaviour {
 		scrollPos = GUILayout.BeginScrollView(scrollPos);
 		selection = GUILayout.SelectionGrid(selection, levelNames.ToArray(), 1);
 		GUILayout.EndScrollView();
+
+		GUILayout.BeginHorizontal();
 		if( GUILayout.Button( "Start Game", GUILayout.Height(50)) )
 		{
 			Debug.Log ("selected level is " + levelNames[selection]);
 			PlayerPrefs.SetString( "selected_level", levelNames[selection]);
 			Application.LoadLevel( Application.loadedLevel + 1);	// go to whatever the next level in the build is
 		}
+		if( GUILayout.Button( "Level Editor", GUILayout.Height(50)) )
+			Application.LoadLevel( "LevelEditor");
+		GUILayout.EndHorizontal();
+
 		GUILayout.Space(15);
 		GUILayout.Label ( creditsText, GUI.skin.box );
 		GUILayout.EndArea();

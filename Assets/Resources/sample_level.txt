@@ -9,3 +9,10 @@
 0000200011
 0040001111
 0000111111
+# hash starts a comment
+# 0 - water
+# 1 - land
+# 2 - underwater mine
+# 3 - water where shark starts
+# 4 - water with treasure
+# 5 - ship start position

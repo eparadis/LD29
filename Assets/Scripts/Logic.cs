@@ -75,16 +75,19 @@ public class Logic : MonoBehaviour {
 			if( levels[i].name == currentLevelName)
 				nextLevel = i + 1;
 		}
-		if( nextLevel == levels.Length )	// we've finished the last level, so go back to the menu
+		if(Application.loadedLevelName != "LevelEditor")	// don't try to go to a new level if we're in the editor
 		{
-			Debug.Log("Could not find another level, going back to title screen.");
-			Application.LoadLevel( 0 );
-		}
-		else
-		{
-			// store the next level in the player prefs so it'll get loaded when we jump back
-			PlayerPrefs.SetString( "selected_level", levels[nextLevel].name);
-			Application.LoadLevel( Application.loadedLevel);
+			if( nextLevel == levels.Length )	// we've finished the last level, so go back to the menu
+			{
+				Debug.Log("Could not find another level, going back to title screen.");
+				Application.LoadLevel( 0 );
+			}
+			else
+			{
+				// store the next level in the player prefs so it'll get loaded when we jump back
+				PlayerPrefs.SetString( "selected_level", levels[nextLevel].name);
+				Application.LoadLevel( Application.loadedLevel);
+			}
 		}
 	}
 
@@ -98,7 +101,8 @@ public class Logic : MonoBehaviour {
 		{
 			yield return new WaitForEndOfFrame();
 		}
-		Application.LoadLevel( Application.loadedLevel);
+		if(Application.loadedLevelName != "LevelEditor")	// if we're not in the editor, restart the level
+			Application.LoadLevel( Application.loadedLevel);
 	}
 
 	void OnDiverMoved( Vector2 p)
