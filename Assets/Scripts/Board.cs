@@ -10,36 +10,13 @@ public class Board : MonoBehaviour {
 	public GameObject sharkPrefab;
 	public GameObject treasurePrefab;
 
-	private string[] sampleLevelData = {
-	//   0123456789
-		"0000000000",	// 0
-		"0011002000",	// 1
-		"0011004000",	// 2
-		"0000002000",	// 3
-		"0000000000",	// 4
-		"0020000300",	// 5
-		"0030000001",	// 6
-		"0000200011",	// 7
-		"0040001111",	// 8
-		"0000111111"};	// 9
-
 	private List<char[]> levelData;
 	private int totalTreasures;
 
-	// Use this for initialization
-	void Start () {
-		LoadLevel( sampleLevelData);
+	public void InitalizeBoard ( List<char[]> level ) {
+		levelData = level;	// should we clone our own copy?
 		PlaceTiles();
 		BroadcastMessage("OnBoardLoaded");	// tell child objects board is loaded; should include all tiles, players, enemies, etc
-	}
-
-	void LoadLevel( string[] input)
-	{
-		levelData = new List<char[]>();
-		foreach( string s in input )
-		{
-			levelData.Add( s.ToCharArray() );
-		}
 	}
 
 	void PlaceTiles()
