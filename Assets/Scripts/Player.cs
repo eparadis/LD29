@@ -99,6 +99,7 @@ public class Player : MonoBehaviour {
 	{
 		p.z = diver.transform.localPosition.z;
 		diver.transform.localPosition = p;
+		transform.parent.gameObject.BroadcastMessage( "OnDiverMoved", new Vector2( p.x, p.y));
 	}
 
 	// called on a successful change in position

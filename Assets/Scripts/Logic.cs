@@ -55,4 +55,10 @@ public class Logic : MonoBehaviour {
 		}
 		Application.LoadLevel (0);
 	}
+
+	void OnDiverMoved( Vector2 p)
+	{
+		if( board.isMineTile( (int) p.x, (int) p.y) )
+			board.NeutralizeMine( (int) p.x, (int) p.y);
+	}
 }

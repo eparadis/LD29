@@ -23,7 +23,7 @@ public class Shark : MonoBehaviour {
 		transform.position = pos;
 	}
 
-	void OnPlayerMoved( Vector2 playerPos)
+	void OnDiverMoved( Vector2 playerPos)
 	{
 		// TODO this isn't the best behavior since it allows diagonal moves; a better way would be to find target moves, rule out the bad ones, then pick the best amongst the remaining
 		int pRow = (int) playerPos.x;

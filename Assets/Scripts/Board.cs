@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Board : MonoBehaviour {
 
@@ -9,7 +10,7 @@ public class Board : MonoBehaviour {
 	public GameObject sharkPrefab;
 	public GameObject treasurePrefab;
 
-	private string[] levelData = {
+	private string[] sampleLevelData = {
 	//   0123456789
 		"0000000000",	// 0
 		"0011002000",	// 1
@@ -22,15 +23,22 @@ public class Board : MonoBehaviour {
 		"0040001111",	// 8
 		"0000111111"};	// 9
 
+	private List<char[]> levelData;
+
 	// Use this for initialization
 	void Start () {
+		LoadLevel( sampleLevelData);
 		PlaceTiles();
 		BroadcastMessage("OnBoardLoaded");	// tell child objects board is loaded; should include all tiles, players, enemies, etc
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	void LoadLevel( string[] input)
+	{
+		levelData = new List<char[]>();
+		foreach( string s in input )
+		{
+			levelData.Add( s.ToCharArray() );
+		}
 	}
 
 	void PlaceTiles()
@@ -118,4 +126,41 @@ public class Board : MonoBehaviour {
 	{
 		return levelData[row][col] == '2';
 	}
+
+	public void NeutralizeMine( int row, int col)
+	{
+		if( levelData[row][col] == '2')
+		{
+			// change the map data
+			char[] temp = levelData[row];
+			temp[col] = '0';
+			levelData[row] = temp;
+			// redraw the single changed tile
+			MakeWaterTile( row, col);
+		}
+	}
+
+	void MakeWaterTile( int row, int col)
+	{
+		Destroy(GameObject.Find( MakeTileName(row, col)));
+		GameObject tile;
+		Vector3 pos = new Vector3( row, col, 0);
+		tile = (GameObject) GameObject.Instantiate( waterTilePrefab);
+
+		tile.transform.parent = gameObject.transform;
+		tile.transform.localPosition = pos;
+		tile.name = MakeTileName( row, col);
+		ClickReporter cr = tile.AddComponent<ClickReporter>();
+		cr.row = row;
+		cr.col = col;
+		cr.reportTarget = gameObject;
+	}
+
+	/*private void EraseTiles()
+	{
+		foreach( Transform child in transform)
+		{
+			Destroy(child.gameObject);
+		}
+	}*/
 }
