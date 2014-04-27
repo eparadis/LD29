@@ -6,7 +6,8 @@ public class LevelDataLoader : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		ReadLevelFromFile( "sample_level");
+
+		ReadLevelFromFile( PlayerPrefs.GetString("selected_level", "sample_level") );
 	}
 
 	void ReadLevelFromFile( string textResourceName)

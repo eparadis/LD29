@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TitleMenu : MonoBehaviour {
 
@@ -12,23 +13,40 @@ public class TitleMenu : MonoBehaviour {
 		"Programming: Ed Paradis\n" +
 		"Special Thanks to Katharine C. <3";
 
+	private List<string> levelNames;
+	int selection = 0;
+	Vector2 scrollPos;
+
 	// Use this for initialization
 	void Start () {
-	
+		TextAsset[] levels = Resources.LoadAll<TextAsset>("");
+		levelNames = new List<string>();
+		foreach( TextAsset ta in levels)
+		{
+			levelNames.Add( ta.name);
+		}
 	}
 	
 	void OnGUI()
 	{
-		Rect menuRect = new Rect( Screen.width/4, Screen.height/3, Screen.width/2, Screen.height/2);
+		Rect menuRect = new Rect( Screen.width/4, Screen.height/4, Screen.width/2, Screen.height/1.7f);
 
 		GUILayout.BeginArea( menuRect, GUI.skin.box);
 		GUILayout.Space(15);
 		GUILayout.Label( instructionText, GUI.skin.box, GUILayout.ExpandHeight(true) );
 		GUILayout.Space(15);
-		if( GUILayout.Button( "Start Game", GUILayout.Height(100)) )
+		GUILayout.Label("Select a level:");
+		scrollPos = GUILayout.BeginScrollView(scrollPos);
+		selection = GUILayout.SelectionGrid(selection, levelNames.ToArray(), 1);
+		GUILayout.EndScrollView();
+		if( GUILayout.Button( "Start Game", GUILayout.Height(50)) )
+		{
+			Debug.Log ("selected level is " + levelNames[selection]);
+			PlayerPrefs.SetString( "selected_level", levelNames[selection]);
 			Application.LoadLevel( Application.loadedLevel + 1);	// go to whatever the next level in the build is
+		}
 		GUILayout.Space(15);
-		GUILayout.Label ( creditsText, GUI.skin.box, GUILayout.ExpandHeight(true) );
+		GUILayout.Label ( creditsText, GUI.skin.box );
 		GUILayout.EndArea();
 
 	}

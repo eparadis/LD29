@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Logic : MonoBehaviour {
 
@@ -51,7 +52,40 @@ public class Logic : MonoBehaviour {
 		endMessageTextObject.GetComponent<TextMesh>().text = "Level Complete";
 		StartCoroutine( AnimateEndMessage() );
 		BroadcastMessage("OnSinkShip");
-		// TODO go to the next level
+		StartCoroutine( WaitForAnyKeyToGoToNextLevel() );
+	}
+
+	IEnumerator WaitForAnyKeyToGoToNextLevel()
+	{
+		yield return new WaitForEndOfFrame(); // gobble any input from playing
+		yield return new WaitForSeconds(0.5f);	//give time for the game over to run a little
+
+		float time = Time.time;
+		while( !Input.anyKey && !Input.GetMouseButton(0) && Time.time < time + 0.5f )
+		{
+			yield return new WaitForEndOfFrame();
+		}
+
+		// TODO this is REALLY a hack-job >:O
+		string currentLevelName = PlayerPrefs.GetString("selected_level", "sample_level");
+		int nextLevel = 0;
+		TextAsset[] levels = Resources.LoadAll<TextAsset>("");
+		for( int i = 0; i < levels.Length; i += 1)
+		{
+			if( levels[i].name == currentLevelName)
+				nextLevel = i + 1;
+		}
+		if( nextLevel == levels.Length )	// we've finished the last level, so go back to the menu
+		{
+			Debug.Log("Could not find another level, going back to title screen.");
+			Application.LoadLevel( 0 );
+		}
+		else
+		{
+			// store the next level in the player prefs so it'll get loaded when we jump back
+			PlayerPrefs.SetString( "selected_level", levels[nextLevel].name);
+			Application.LoadLevel( Application.loadedLevel);
+		}
 	}
 
 	IEnumerator WaitForAnyKeyToRestart()
@@ -59,11 +93,12 @@ public class Logic : MonoBehaviour {
 		yield return new WaitForEndOfFrame(); // gobble any input from playing
 		yield return new WaitForSeconds(0.5f);	//give time for the game over to run a little
 
-		while( !Input.anyKey && !Input.GetMouseButton(0) )
+		float time = Time.time;
+		while( !Input.anyKey && !Input.GetMouseButton(0) && Time.time < time + 0.5f)
 		{
 			yield return new WaitForEndOfFrame();
 		}
-		Application.LoadLevel (0);
+		Application.LoadLevel( Application.loadedLevel);
 	}
 
 	void OnDiverMoved( Vector2 p)
