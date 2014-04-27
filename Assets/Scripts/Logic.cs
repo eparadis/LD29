@@ -80,4 +80,11 @@ public class Logic : MonoBehaviour {
 			}
 		}
 	}
+
+	void OnSharkCaughtDiver( Vector2 p)
+	{
+		endMessageTextObject.GetComponent<TextMesh>().text = "Game Over";
+		StartCoroutine( AnimateEndMessage() );
+		StartCoroutine( WaitForAnyKeyToRestart() );
+	}
 }

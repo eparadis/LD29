@@ -12,6 +12,8 @@ public class Player : MonoBehaviour {
 	bool diverDeployed = false;
 	public GameObject diverPrefab;
 	GameObject diver;
+	int diverRow = 0;
+	int diverCol = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -33,11 +35,16 @@ public class Player : MonoBehaviour {
 
 	void MoveUp()
 	{
+		if(isSunk)
+			return;
+
 		if( diverDeployed)
 		{
 			if( isMovable( row - 1, col))
 			{
-				SetDiverPosition(board.GetTileLocalPosition( row - 1, col));
+				diverRow = row - 1;
+				diverCol = col;
+				SetDiverPosition();
 			}
 		} else
 		if( isMovable( row - 1, col) )
@@ -49,11 +56,16 @@ public class Player : MonoBehaviour {
 
 	void MoveDown()
 	{
+		if(isSunk)
+			return;
+
 		if( diverDeployed)
 		{
 			if( isMovable( row + 1, col))
 			{
-				SetDiverPosition(board.GetTileLocalPosition( row + 1, col));
+				diverRow = row + 1;
+				diverCol = col;
+				SetDiverPosition();
 			}
 		} else
 		if( isMovable( row + 1, col) )
@@ -65,11 +77,16 @@ public class Player : MonoBehaviour {
 
 	void MoveRight()
 	{
+		if(isSunk)
+			return;
+
 		if( diverDeployed)
 		{
 			if( isMovable( row, col + 1))
 			{
-				SetDiverPosition(board.GetTileLocalPosition( row, col + 1));
+				diverRow = row;
+				diverCol = col + 1;
+				SetDiverPosition();
 			}
 		} else
 		if( isMovable( row, col + 1) )
@@ -81,11 +98,16 @@ public class Player : MonoBehaviour {
 
 	void MoveLeft()
 	{
+		if(isSunk)
+			return;
+
 		if( diverDeployed)
 		{
 			if( isMovable( row, col - 1))
 			{
-				SetDiverPosition(board.GetTileLocalPosition( row, col - 1));
+				diverRow = row;
+				diverCol = col - 1;
+				SetDiverPosition();
 			}
 		} else
 		if( isMovable( row, col - 1) )
@@ -95,11 +117,12 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	void SetDiverPosition( Vector3 p )
+	void SetDiverPosition()
 	{
+		Vector3 p = board.GetTileLocalPosition( diverRow, diverCol);
 		p.z = diver.transform.localPosition.z;
 		diver.transform.localPosition = p;
-		transform.parent.gameObject.BroadcastMessage( "OnDiverMoved", new Vector2( p.x, p.y));
+		transform.parent.gameObject.BroadcastMessage( "OnDiverMoved", new Vector2( diverRow, diverCol));
 	}
 
 	// called on a successful change in position
@@ -174,6 +197,9 @@ public class Player : MonoBehaviour {
 
 	void DeployDiver()
 	{
+		if( isSunk )
+			return;	// don't respond to deploying diver if we're sunk
+
 		if( !diverDeployed)
 		{
 			diver = (GameObject) GameObject.Instantiate( diverPrefab);
@@ -188,6 +214,32 @@ public class Player : MonoBehaviour {
 			Destroy (diver);
 			diver = null;
 		}
+	}
+
+	public Vector2 GetDiverPosition()
+	{
+		if( !diverDeployed)
+			return new Vector2( -1, -1);	// off board, should never match
+
+		return new Vector2( diverRow, diverCol);
+	}
+
+	void OnSharkCaughtDiver( Vector2 p)
+	{
+		isSunk = true;	// we're not actually sunk, but the game is over so we're EFFECTIVELY sunk. figuratively 'sunk'
+		StartCoroutine( AnimateDiverDeath() ); // animate the diver dying or something
+	}
+
+	IEnumerator AnimateDiverDeath()
+	{
+		float length = 1f;	// one second 
+		float startTime = Time.time;
+		Vector3 scale = diver.transform.localScale;
+		do {
+			scale *= 0.9f;
+			diver.transform.localScale = scale;
+			yield return new WaitForEndOfFrame();
+		} while (Time.time < startTime + length);
 	}
 
 }

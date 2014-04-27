@@ -6,7 +6,7 @@ public class LevelDataLoader : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		ReadLevelFromFile( "pond");
+		ReadLevelFromFile( "sample_level");
 	}
 
 	void ReadLevelFromFile( string textResourceName)

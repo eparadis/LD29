@@ -21,6 +21,10 @@ public class Shark : MonoBehaviour {
 		Vector3 pos = board.GetTilePosition( row, col);
 		pos.z = transform.position.z;	// do not change the Z position
 		transform.position = pos;
+
+		Vector2 diverPos = GameObject.Find("player").GetComponent<Player>().GetDiverPosition();
+		if( (int)diverPos.x == row && (int)diverPos.y == col)
+			transform.parent.gameObject.BroadcastMessage("OnSharkCaughtDiver", diverPos);
 	}
 
 	void OnDiverMoved( Vector2 playerPos)
@@ -45,8 +49,8 @@ public class Shark : MonoBehaviour {
 		if( !board.isWaterTile(row, nCol) )
 			nCol = col;
 
-		// check that we've not messed up on a diagonal, and that we're not going to move under the player (which is confusing)
-		if( board.isWaterTile( nRow, nCol) && !( pRow == nRow && pCol == nCol) )
+		// check that we've not messed up on a diagonal, 
+		if( board.isWaterTile( nRow, nCol)  )
 		{
 			row = nRow;
 			col = nCol;
