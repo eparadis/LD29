@@ -5,10 +5,11 @@ public class Logic : MonoBehaviour {
 
 	Board board;
 	public GameObject gameOverText;
+	int treasureCollected;
 
 	// Use this for initialization
 	void Start () {
-
+		treasureCollected = 0;
 	}
 	
 	void OnBoardLoaded()
@@ -60,5 +61,11 @@ public class Logic : MonoBehaviour {
 	{
 		if( board.isMineTile( (int) p.x, (int) p.y) )
 			board.NeutralizeMine( (int) p.x, (int) p.y);
+		if( board.isTreasureTile( (int) p.x, (int) p.y) )
+		{
+			board.CollectTreasure( (int) p.x, (int) p.y );
+			treasureCollected += 1;
+			Debug.Log("Treasure Collected " + treasureCollected);
+		}
 	}
 }

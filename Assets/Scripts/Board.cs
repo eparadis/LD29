@@ -85,6 +85,7 @@ public class Board : MonoBehaviour {
 					Vector3 treasurePos = pos;
 					treasurePos.z = -0.75f;	// above tiles and sharks, below ship
 					treasureGO.transform.localPosition = treasurePos;
+					treasureGO.name = "treasure_" + MakeTileName(row,col);
 					break;
 				}
 				tile.transform.parent = gameObject.transform;
@@ -154,6 +155,24 @@ public class Board : MonoBehaviour {
 		cr.row = row;
 		cr.col = col;
 		cr.reportTarget = gameObject;
+	}
+
+	public void CollectTreasure( int row, int col)
+	{
+		GameObject t = GameObject.Find ("treasure_" + MakeTileName( row,col));
+		if(t != null)
+		{
+			Destroy(t);
+		}
+	}
+
+	public bool isTreasureTile( int row, int col)
+	{
+		GameObject t = GameObject.Find ("treasure_" + MakeTileName( row,col));
+		if( t != null)
+			return true;
+		else
+			return false;
 	}
 
 	/*private void EraseTiles()
