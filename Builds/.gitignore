@@ -1,0 +1,3 @@
+# ignore the contents of this directory, except this file telling git to do so
+*
+!.gitignore
