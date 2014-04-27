@@ -4,7 +4,7 @@ using System.Collections;
 public class Logic : MonoBehaviour {
 
 	Board board;
-	public GameObject gameOverText;
+	public GameObject endMessageTextObject;
 	int treasureCollected;
 
 	// Use this for initialization
@@ -25,13 +25,14 @@ public class Logic : MonoBehaviour {
 		// did the player hit a mine?
 		if( board.isMineTile(row, col) )
 		{
-			StartCoroutine( AnimateGameOver() );
+			endMessageTextObject.GetComponent<TextMesh>().text = "Game Over";
+			StartCoroutine( AnimateEndMessage() );
 			BroadcastMessage("OnSinkShip");
 			StartCoroutine( WaitForAnyKeyToRestart() );
 		}
 	}
 
-	IEnumerator AnimateGameOver()
+	IEnumerator AnimateEndMessage()
 	{
 		float length = 1f;
 		float startTime = Time.time;
@@ -40,9 +41,17 @@ public class Logic : MonoBehaviour {
 		do {
 			t = Time.time - startTime;
 			pos.x = Mathf.Sin(t) * 5f;
-			gameOverText.transform.localPosition = pos;
+			endMessageTextObject.transform.localPosition = pos;
 			yield return new WaitForEndOfFrame();
 		} while( Time.time < startTime + length);
+	}
+
+	void LevelComplete()
+	{
+		endMessageTextObject.GetComponent<TextMesh>().text = "Level Complete";
+		StartCoroutine( AnimateEndMessage() );
+		BroadcastMessage("OnSinkShip");
+		// TODO go to the next level
 	}
 
 	IEnumerator WaitForAnyKeyToRestart()
@@ -65,7 +74,10 @@ public class Logic : MonoBehaviour {
 		{
 			board.CollectTreasure( (int) p.x, (int) p.y );
 			treasureCollected += 1;
-			Debug.Log("Treasure Collected " + treasureCollected);
+			if( board.GetTotalTreasures() == treasureCollected)
+			{
+				LevelComplete();
+			}
 		}
 	}
 }

@@ -24,6 +24,7 @@ public class Board : MonoBehaviour {
 		"0000111111"};	// 9
 
 	private List<char[]> levelData;
+	private int totalTreasures;
 
 	// Use this for initialization
 	void Start () {
@@ -43,6 +44,7 @@ public class Board : MonoBehaviour {
 
 	void PlaceTiles()
 	{
+		totalTreasures = 0;
 		int numRows = 10;
 		int numCols = 10;
 
@@ -86,6 +88,8 @@ public class Board : MonoBehaviour {
 					treasurePos.z = -0.75f;	// above tiles and sharks, below ship
 					treasureGO.transform.localPosition = treasurePos;
 					treasureGO.name = "treasure_" + MakeTileName(row,col);
+
+					totalTreasures += 1;
 					break;
 				}
 				tile.transform.parent = gameObject.transform;
@@ -173,6 +177,11 @@ public class Board : MonoBehaviour {
 			return true;
 		else
 			return false;
+	}
+
+	public int GetTotalTreasures()
+	{
+		return totalTreasures;
 	}
 
 	/*private void EraseTiles()

@@ -614,7 +614,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cc75f78dd93b490f8fbfde1a9bec665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameOverText: {fileID: 1886109058}
+  endMessageTextObject: {fileID: 1886109058}
 --- !u!1 &666043100
 GameObject:
   m_ObjectHideFlags: 0
@@ -1690,7 +1690,7 @@ GameObject:
   - 23: {fileID: 1886109060}
   - 102: {fileID: 1886109059}
   m_Layer: 0
-  m_Name: game over text
+  m_Name: end level text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
