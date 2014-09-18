@@ -16,15 +16,21 @@ public class TitleMenu : MonoBehaviour {
 	private List<string> levelNames;
 	int selection = 0;
 	Vector2 scrollPos;
+	private WWW www;
+	string hostname;
+	string levelRoute = "level";
 
 	// Use this for initialization
-	void Start () {
-		TextAsset[] levels = Resources.LoadAll<TextAsset>("");
-		levelNames = new List<string>();
-		foreach( TextAsset ta in levels)
-		{
-			levelNames.Add( ta.name);
-		}
+	IEnumerator Start () {
+		if( Application.isEditor)
+			hostname = "http://localhost:5000/";
+		else
+			hostname = Application.absoluteURL;  // TODO this almost certainly isn't right
+
+		www = new WWW( hostname + levelRoute);
+		yield return www; // wait for download to complete
+		levelNames = new List<string>( www.text.Split( new char[]{ '\n' } ) );
+		levelNames.RemoveAll( s => s.Length == 0);	// remove any empty strings from the level list
 	}
 	
 	void OnGUI()
@@ -37,14 +43,16 @@ public class TitleMenu : MonoBehaviour {
 		GUILayout.Space(15);
 		GUILayout.Label("Select a level:");
 		scrollPos = GUILayout.BeginScrollView(scrollPos);
-		selection = GUILayout.SelectionGrid(selection, levelNames.ToArray(), 1);
+		if(www.isDone && levelNames != null )
+			selection = GUILayout.SelectionGrid(selection, levelNames.ToArray(), 1);
 		GUILayout.EndScrollView();
 
 		GUILayout.BeginHorizontal();
 		if( GUILayout.Button( "Start Game", GUILayout.Height(50)) )
 		{
 			Debug.Log ("selected level is " + levelNames[selection]);
-			PlayerPrefs.SetString( "selected_level", levelNames[selection]);
+			PlayerPrefs.SetString( "selected_level", hostname + levelRoute + "/" + WWW.EscapeURL(levelNames[selection]));
+			PlayerPrefs.SetInt( "load_from_web", 1);
 			Application.LoadLevel( Application.loadedLevel + 1);	// go to whatever the next level in the build is
 		}
 		if( GUILayout.Button( "Level Editor", GUILayout.Height(50)) )
@@ -53,6 +61,7 @@ public class TitleMenu : MonoBehaviour {
 
 		GUILayout.Space(15);
 		GUILayout.Label ( creditsText, GUI.skin.box );
+
 		GUILayout.EndArea();
 
 	}

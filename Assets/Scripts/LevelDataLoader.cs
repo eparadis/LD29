@@ -12,7 +12,7 @@ public class LevelDataLoader : MonoBehaviour {
 	bool sure = false;
 
 	// Use this for initialization
-	void Start () {
+	IEnumerator Start () {
 		if( Application.loadedLevelName == "LevelEditor")
 		{
 			if(PlayerPrefs.HasKey("user_level"))
@@ -25,7 +25,13 @@ public class LevelDataLoader : MonoBehaviour {
 			}
 			showGUI = true;
 		} else
-			ReadLevelFromFile( PlayerPrefs.GetString("selected_level", "sample_level") );
+		{
+			if( PlayerPrefs.GetInt( "load_from_web", 0) == 0)
+				ReadLevelFromFile( PlayerPrefs.GetString("selected_level", "sample_level") );
+			else // 1
+				StartCoroutine( ReadLevelFromURL ( PlayerPrefs.GetString("selected_level")) );
+		}
+		return null;
 	}
 
 	void ReadLevelFromFile( string textResourceName)
@@ -38,6 +44,13 @@ public class LevelDataLoader : MonoBehaviour {
 		}
 
 		ReadLevelFromString( textData.text);
+	}
+
+	IEnumerator ReadLevelFromURL( string url )
+	{
+		WWW www = new WWW( url);
+		yield return www;
+		ReadLevelFromString( www.text);
 	}
 
 	void ReadLevelFromString( string level)
