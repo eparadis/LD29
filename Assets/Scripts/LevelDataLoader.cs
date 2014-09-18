@@ -10,11 +10,14 @@ public class LevelDataLoader : MonoBehaviour {
 	private GameObject boardGO;
 	private Vector2 scrollPos;
 	bool sure = false;
+	string levelName;
 
 	// Use this for initialization
 	IEnumerator Start () {
 		if( Application.loadedLevelName == "LevelEditor")
 		{
+			levelName = "asdf";
+
 			if(PlayerPrefs.HasKey("user_level"))
 			{
 				enteredText = PlayerPrefs.GetString("user_level");
@@ -79,6 +82,8 @@ public class LevelDataLoader : MonoBehaviour {
 			return;
 
 		GUILayout.BeginArea( new Rect(170, 200, 200, 360), GUI.skin.box);
+		GUILayout.Label ("Level Name:");
+		levelName = GUILayout.TextField( levelName);
 		GUILayout.Label( "Level Data:");
 		scrollPos = GUILayout.BeginScrollView(scrollPos);
 		enteredText = GUILayout.TextArea( enteredText, GUILayout.ExpandHeight(true) );
@@ -102,6 +107,17 @@ public class LevelDataLoader : MonoBehaviour {
 				PlayerPrefs.DeleteKey("user_level");
 				Application.LoadLevel( Application.loadedLevel);
 			}
+		}
+		GUILayout.Space (20);
+		if(GUILayout.Button ("Store to server"))
+		{
+			WWWForm form = new WWWForm();
+			form.AddField( "levelName", levelName);
+			form.AddField( "levelData", enteredText);
+			WWW www = new WWW( "http://localhost:5000/add/", form );
+			// spinning isn't great (and especially in the UI task...) but here we go
+			while( !www.isDone)
+			{ }
 		}
 		GUILayout.EndArea();
 	}

@@ -33,5 +33,15 @@ def get_level( level_name):
 1000000111
 1111111111"""
 
+@app.route('/add/', methods=['POST'])
+def add_level():
+    """add a new level to the list of levels"""
+    # validate the input
+    print request.form['levelName']
+    print request.form['levelData']
+    # return an error if its no good
+    # otherwise store it someplace
+    return ""
+
 if __name__ == '__main__':
     app.run()
